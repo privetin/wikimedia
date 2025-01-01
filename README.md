@@ -1,62 +1,50 @@
-# wikimedia MCP server
+# Wikimedia MCP Server
 
-A MCP server project
+An MCP server for interacting with Wikimedia APIs. Access Wikipedia and other Wikimedia project content programmatically.
 
-## Components
+## Features
 
-### Resources
+- **Search Content**: Full-text search across Wikimedia page content
+- **Search Titles**: Search page titles with autocomplete suggestions
+- **Get Page**: Retrieve page content, title, URL and metadata
+- **Language Versions**: Find versions of a page in other languages
+- **Featured Content**: Get featured articles, most read pages, and pictures of the day
+- **Historical Events**: Get events, births, deaths, and holidays for any date
 
-The server implements a simple note storage system with:
-- Custom note:// URI scheme for accessing individual notes
-- Each note resource has a name, description and text/plain mimetype
+## Installation
 
-### Prompts
+### Claude Desktop
 
-The server provides a single prompt:
-- summarize-notes: Creates summaries of all stored notes
-  - Optional "style" argument to control detail level (brief/detailed)
-  - Generates prompt combining all current notes with style preference
+On MacOS:
+```
+~/Library/Application Support/Claude/claude_desktop_config.json
+```
 
-### Tools
+On Windows:
+```
+C:\Users\<username>\AppData\Roaming\Claude\claude_desktop_config.json
+```
 
-The server implements one tool:
-- add-note: Adds a new note to the server
-  - Takes "name" and "content" as required string arguments
-  - Updates server state and notifies clients of resource changes
-
-## Configuration
-
-[TODO: Add configuration details specific to your implementation]
-
-## Quickstart
-
-### Install
-
-#### Claude Desktop
-
-On MacOS: `~/Library/Application\ Support/Claude/claude_desktop_config.json`
-On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
-
-<details>
-  <summary>Development/Unpublished Servers Configuration</summary>
-  ```
+### Development/Unpublished Servers Configuration
+```json
+{
   "mcpServers": {
     "wikimedia": {
       "command": "uv",
       "args": [
         "--directory",
-        "C:\MCP\server\community\wikimedia",
+        "C:\\MCP\\server\\community\\wikimedia",
         "run",
         "wikimedia"
       ]
     }
   }
-  ```
-</details>
+}
+```
 
-<details>
-  <summary>Published Servers Configuration</summary>
-  ```
+### Published Servers Configuration
+```json
+{
   "mcpServers": {
     "wikimedia": {
       "command": "uvx",
@@ -65,47 +53,76 @@ On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
       ]
     }
   }
-  ```
-</details>
+}
+```
+
+## Tools
+
+### search_content
+Full-text search across Wikimedia page content. Returns snippets matching the query.
+- `query` (required): Search term
+- `limit` (1-50, default 10): Number of results
+- `project` (default "wikipedia"): Wikimedia project
+- `language` (default "en"): Language code
+
+### search_titles
+Search Wikimedia page titles starting with the query. Returns suggestions with descriptions.
+- `query` (required): Search prefix
+- `limit` (1-100, default 10): Number of results
+- `project` (default "wikipedia"): Wikimedia project
+- `language` (default "en"): Language code
+
+### get_page
+Get Wikimedia page content, title, URL and last modified date.
+- `title` (required): Page title
+- `project` (default "wikipedia"): Wikimedia project
+- `language` (default "en"): Language code
+
+### get_languages
+Get versions of a Wikimedia page in other languages.
+- `title` (required): Page title
+- `project` (default "wikipedia"): Wikimedia project
+- `language` (default "en"): Language code
+
+### get_featured
+Get featured Wikimedia content for a date. Returns featured article, most read pages, and picture of the day.
+- `date` (YYYY/MM/DD, default today): Date to get content for
+- `project` ("wikipedia" only): Must be Wikipedia
+- `language` (en/de/fr/es/ru/ja/zh): Supported languages
+
+### get_on_this_day
+Get historical events from Wikimedia for a date.
+- `date` (MM/DD, default today): Date to get events for
+- `type` (default "all"): Event type - all/selected/births/deaths/holidays/events
+- `project` ("wikipedia" only): Must be Wikipedia
+- `language` (en/de/fr/es/ru/ja/zh): Supported languages
+
+## Example Usage
+
+```python
+# Search for content about "artificial intelligence"
+result = await client.call_tool("search_content", {
+    "query": "artificial intelligence",
+    "limit": 5,
+    "language": "en"
+})
+
+# Get today's featured content
+result = await client.call_tool("get_featured", {
+    "language": "en"
+})
+
+# Get historical events for January 1st
+result = await client.call_tool("get_on_this_day", {
+    "date": "01/01",
+    "type": "all",
+    "language": "en"
+})
+```
 
 ## Development
 
-### Building and Publishing
-
-To prepare the package for distribution:
-
-1. Sync dependencies and update lockfile:
-```bash
-uv sync
-```
-
-2. Build package distributions:
-```bash
-uv build
-```
-
-This will create source and wheel distributions in the `dist/` directory.
-
-3. Publish to PyPI:
-```bash
-uv publish
-```
-
-Note: You'll need to set PyPI credentials via environment variables or command flags:
-- Token: `--token` or `UV_PUBLISH_TOKEN`
-- Or username/password: `--username`/`UV_PUBLISH_USERNAME` and `--password`/`UV_PUBLISH_PASSWORD`
-
-### Debugging
-
-Since MCP servers run over stdio, debugging can be challenging. For the best debugging
-experience, we strongly recommend using the [MCP Inspector](https://github.com/modelcontextprotocol/inspector).
-
-
-You can launch the MCP Inspector via [`npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) with this command:
-
-```bash
-npx @modelcontextprotocol/inspector uv --directory C:\MCP\server\community\wikimedia run wikimedia
-```
-
-
-Upon launching, the Inspector will display a URL that you can access in your browser to begin debugging.
+This project uses:
+- Python 3.12+
+- uv for package management
+- MCP server framework
