@@ -1,6 +1,6 @@
 # Wikimedia MCP Server
 
-An MCP server for interacting with Wikimedia APIs. Access Wikipedia and other Wikimedia project content programmatically.
+A Model Context Protocol (MCP) server for interacting with Wikimedia APIs. Access Wikipedia and other Wikimedia project content programmatically with natural language queries.
 
 ## Features
 
@@ -11,9 +11,22 @@ An MCP server for interacting with Wikimedia APIs. Access Wikipedia and other Wi
 - **Featured Content**: Get featured articles, most read pages, and pictures of the day
 - **Historical Events**: Get events, births, deaths, and holidays for any date
 
+## Requirements
+
+- Python 3.12+
+- uv package manager
+- MCP server framework
+
+## Security
+
+- All user inputs are validated
+- No sensitive data or credentials required
+- Rate limiting handled by Wikimedia API
+- Error messages don't expose internal details
+
 ## Installation
 
-### Claude Desktop
+### Claude Desktop Configuration
 
 On MacOS:
 ```
@@ -25,7 +38,7 @@ On Windows:
 C:\Users\<username>\AppData\Roaming\Claude\claude_desktop_config.json
 ```
 
-### Development/Unpublished Servers Configuration
+### Development Configuration
 ```json
 {
   "mcpServers": {
@@ -42,7 +55,7 @@ C:\Users\<username>\AppData\Roaming\Claude\claude_desktop_config.json
 }
 ```
 
-### Published Servers Configuration
+### Published Configuration
 ```json
 {
   "mcpServers": {
@@ -120,9 +133,10 @@ result = await client.call_tool("get_on_this_day", {
 })
 ```
 
-## Development
+## Contributing
 
-This project uses:
-- Python 3.12+
-- uv for package management
-- MCP server framework
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+
+MIT License. See [LICENSE](LICENSE) file for details.
