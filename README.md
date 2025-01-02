@@ -2,6 +2,8 @@
 
 A Model Context Protocol (MCP) server for interacting with Wikimedia APIs. Access Wikipedia and other Wikimedia project content programmatically with natural language queries.
 
+<a href="https://glama.ai/mcp/servers/l6ihu97mw7"><img width="380" height="200" src="https://glama.ai/mcp/servers/l6ihu97mw7/badge" alt="Wikimedia Server MCP server" /></a>
+
 ## Features
 
 - **Search Content**: Full-text search across Wikimedia page content
