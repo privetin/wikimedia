@@ -1,5 +1,7 @@
 # Wikimedia MCP Server
 
+[![smithery badge](https://smithery.ai/badge/wikimedia)](https://smithery.ai/protocol/wikimedia)
+
 A Model Context Protocol (MCP) server for interacting with Wikimedia APIs. Access Wikipedia and other Wikimedia project content programmatically with natural language queries.
 
 ## Features
@@ -67,6 +69,14 @@ C:\Users\<username>\AppData\Roaming\Claude\claude_desktop_config.json
     }
   }
 }
+```
+
+### Installing via Smithery
+
+To install Wikimedia for Claude Desktop automatically via [Smithery](https://smithery.ai/protocol/wikimedia):
+
+```bash
+npx @smithery/cli install wikimedia --client claude
 ```
 
 ## Tools
